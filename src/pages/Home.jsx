@@ -2,10 +2,12 @@ import productos from '../data/productos.js';
 import ProductCard from '../components/ProductCard';
 
 const Home = () => {
-    const agregarAlCarrito = (producto) => {
+    const agregarAlCarrito = producto => {
         const carritoActual = JSON.parse(localStorage.getItem('carrito')) || [];
 
-        const existe = carritoActual.find((item) => item.nombre === producto.nombre);
+        const existe = carritoActual.find(
+            item => item.nombre === producto.nombre
+        );
         if (existe) {
             existe.cantidad += 1;
         } else {
@@ -24,17 +26,27 @@ const Home = () => {
                     <h2 className="section-title">¡Los más vendidos! 🔥🔥🔥</h2>
                     <div className="product-grid">
                         {productos.slice(0, 5).map((producto, index) => (
-                            <ProductCard key={index} producto={producto} onAgregar={agregarAlCarrito} />
+                            <ProductCard
+                                key={index}
+                                producto={producto}
+                                onAgregar={agregarAlCarrito}
+                            />
                         ))}
                     </div>
                 </section>
 
                 {/* Sección 2: Nuestros recién llegados */}
                 <section className="product-section">
-                    <h2 className="section-title">¡Nuestros recién llegados!</h2>
+                    <h2 className="section-title">
+                        ¡Nuestros recién llegados!
+                    </h2>
                     <div className="product-grid">
                         {productos.slice(-5).map((producto, index) => (
-                            <ProductCard key={index} producto={producto} onAgregar={agregarAlCarrito} />
+                            <ProductCard
+                                key={index}
+                                producto={producto}
+                                onAgregar={agregarAlCarrito}
+                            />
                         ))}
                     </div>
                 </section>

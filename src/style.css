@@ -640,7 +640,7 @@ input[type="number"] {
 }
 
 .cart-item-quantity input {
-    width: 48px;
+    width: 70px;
     height: 32px;
     text-align: center;
     border: 1px solid #000;
@@ -762,6 +762,7 @@ input[type="number"] {
     margin-bottom: 12px;
     font-weight: 700;
 }
+
 .checkout-summary ul {
     list-style-type: none;
     padding-left: 0;
@@ -770,7 +771,7 @@ input[type="number"] {
 
 .checkout-summary ul li {
     font-size: 16px;
-    color: #000;
+    color: #4e4e4e;
     margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
@@ -779,7 +780,7 @@ input[type="number"] {
 
 .checkout-summary ul li span {
     font-weight: 700;
-    color: #000;
+    color: #4e4e4e;
 }
 
 .checkout-summary .total-row {
@@ -787,7 +788,7 @@ input[type="number"] {
     font-weight: 700;
     color: #e0dd4d;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-top: 10px;
     border-top: 2px solid #e0dd4d;
@@ -966,6 +967,7 @@ input[type="number"] {
 .login-button,
 .register-button {
     height: 45px;
+    width: 150px;
     background-color: #e0dd4d;
     color: #000;
     border: none;
@@ -982,21 +984,18 @@ input[type="number"] {
     background-color: #d1ce3a;
 }
 
+.login-error {
+    color: #e74c3c;
+    font-size: 16px;
+    text-align: center;
+    font-family: "Kdam Thmor Pro", sans-serif;
+}
+
 .login-links {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: space-around;
     font-family: "Kdam Thmor Pro", sans-serif;
     font-size: 14px;
-}
-
-.login-links a {
-    color: #000;
-    text-decoration: none;
-}
-
-.login-links a:hover {
-    text-decoration: underline;
 }
 
 @media only screen and (max-width: 768px) {
