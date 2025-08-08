@@ -4,9 +4,7 @@ const ProductCard = ({ producto }) => {
   const navigate = useNavigate();
 
   const irADetalle = () => {
-    console.log("clicking");
-    const nombreParam = encodeURIComponent(producto.nombre.trim());
-    navigate(`/producto?producto=${nombreParam}`);
+    navigate(`/producto?id=${producto.id_producto}`);
   };
 
   return (

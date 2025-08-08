@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import productos from "../data/productos";
+import { obtenerProducto } from "../data/catalogo";
 
 const ProductoDetalle = () => {
     const [producto, setProducto] = useState(null);
@@ -10,29 +10,27 @@ const ProductoDetalle = () => {
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const nombreProducto = params.get("producto");
-
-        if (nombreProducto) {
-            const prod = productos.find(
-                p =>
-                    p.nombre.trim().toLowerCase() ===
-                    decodeURIComponent(nombreProducto).trim().toLowerCase()
-            );
-            if (prod) setProducto(prod);
-            else alert("Producto no encontrado");
+        const idProducto = params.get("id");
+        if (idProducto) {
+            obtenerProducto(idProducto)
+                .then((data) => {
+                    // Si el backend retorna un array, tomar el primer elemento
+                    const prod = Array.isArray(data) ? data[0] : data;
+                    if (prod && prod.id_producto) setProducto(prod);
+                    else alert("Producto no encontrado");
+                })
+                .catch(() => alert("Producto no encontrado"));
         }
     }, [location.search]);
 
     const agregarAlCarrito = () => {
         const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        const existente = carrito.find(item => item.nombre === producto.nombre);
-
+        const existente = carrito.find(item => item.id_producto === producto.id_producto);
         if (existente) {
             existente.cantidad += cantidad;
         } else {
             carrito.push({ ...producto, cantidad });
         }
-
         localStorage.setItem("carrito", JSON.stringify(carrito));
         navigate("/carrito");
     };
@@ -46,7 +44,7 @@ const ProductoDetalle = () => {
                     <div className="product-detail-image">
                         <img
                             className="product-image"
-                            src={producto.imagen}
+                            src={producto.url_imagen || producto.imagen}
                             alt={producto.nombre}
                         />
                     </div>
@@ -55,18 +53,15 @@ const ProductoDetalle = () => {
                             {producto.nombre}
                         </h1>
                         <p className="product-stock">
-                            Stock: <span className="stock-value">15</span>{" "}
-                            unidades
+                            Stock: <span className="stock-value">{producto.stock ?? 15}</span> unidades
                         </p>
                         <p className="product-detail-price">
-                            S/ {producto.precio.toFixed(2)}
+                            S/ {Number(producto.precio).toFixed(2)}
                         </p>
                         <div className="product-detail-quantity">
                             <button
                                 className="quantity-btn"
-                                onClick={() =>
-                                    setCantidad(c => Math.max(1, c - 1))
-                                }
+                                onClick={() => setCantidad(c => Math.max(1, c - 1))}
                             >
                                 -
                             </button>
@@ -78,9 +73,7 @@ const ProductoDetalle = () => {
                             />
                             <button
                                 className="quantity-btn"
-                                onClick={() =>
-                                    setCantidad(c => Math.min(15, c + 1))
-                                }
+                                onClick={() => setCantidad(c => Math.min(producto.stock ?? 15, c + 1))}
                             >
                                 +
                             </button>
@@ -89,16 +82,14 @@ const ProductoDetalle = () => {
                             className="add-to-cart-btn"
                             onClick={agregarAlCarrito}
                         >
-                            <i className="fa-solid fa-cart-plus"></i> Agregar al
-                            carrito
+                            <i className="fa-solid fa-cart-plus"></i> Agregar al carrito
                         </button>
                     </div>
                 </div>
                 <div className="product-detail-description">
                     <h2>Descripción del producto</h2>
                     <p className="description-text">
-                        Producto de excelente calidad con componentes de alto
-                        rendimiento y diseño moderno.
+                        {producto.descripcion || "Producto de excelente calidad con componentes de alto rendimiento y diseño moderno."}
                     </p>
                     <ul className="product-features">
                         <li>Procesador potente</li>

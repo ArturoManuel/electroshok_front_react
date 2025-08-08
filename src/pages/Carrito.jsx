@@ -39,7 +39,7 @@ const Carrito = () => {
                     {carrito.map((item, index) => (
                         <div className="cart-item" key={index}>
                             <img
-                                src={item.imagen}
+                                src={item.url_imagen || item.imagen}
                                 alt={item.nombre}
                                 className="cart-item-image"
                             />
@@ -47,9 +47,7 @@ const Carrito = () => {
                                 <h3 className="cart-item-title">
                                     {item.nombre}
                                 </h3>
-                                <p className="cart-item-price">{`S/${item.precio.toFixed(
-                                    2
-                                )}`}</p>
+                                <p className="cart-item-price">{`S/${Number(item.precio).toFixed(2)}`}</p>
                                 <div className="cart-item-quantity">
                                     <label htmlFor={`quantity-${index}`}>
                                         Cantidad:
