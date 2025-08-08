@@ -31,7 +31,7 @@ const Carrito = () => {
 
     return (
         <div className="cart-section">
-            <h2>Carrito de {usuario?.nombre || 'Invitado'}</h2>
+            <h2>Carrito de {usuario?.nombre || usuario?.correo_electronico?.split('@')[0] || 'Invitado'}</h2>
             {carrito.length === 0 ? (
                 <p>No hay productos en el carrito.</p>
             ) : (

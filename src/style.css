@@ -34,8 +34,8 @@ body {
     background-color: #e0dd4d;
     width: 100%;
     height: auto;
-    padding-bottom: 30px;
-    margin: 0 auto;
+    padding-top: 5px;
+    padding-bottom: 15px;
     border: 1px solid #000;
     border-radius: 0 0 25px 25px;
     box-shadow: 0px 18px 4px rgba(0, 0, 0, 0.25);
@@ -44,14 +44,15 @@ body {
     align-items: center;
 }
 
+
 /* =========================
    LOGO
 ========================= */
 .header-logo {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
-    margin-bottom: 11px; /* Ajuste exacto desde logo a barra */
+    align-items: center;
+    padding-bottom: 5px;
 }
 
 .header-logo img {
@@ -64,17 +65,17 @@ body {
    BARRA DE BÚSQUEDA + LOGIN
 ========================= */
 .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 713px;
-    margin-bottom: 29px; /* Ajuste exacto entre input y botones */
-    gap: 24px;
-    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+    height: 60px;
 }
 
 .search-bar {
-    width: 463px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: 350px;
     height: 45px;
     display: flex;
     border: 1px solid #000;
@@ -91,112 +92,93 @@ body {
     font-size: 14px;
     font-family: "Kdam Thmor Pro", sans-serif;
     background-color: transparent;
-    color: #000;
+    color: black;
 }
 
 .search-bar input::placeholder {
     color: #969696;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 400;
 }
 
 .search-bar button {
     width: 45px;
     height: 45px;
-    background-color: #000;
-    border: none;
-    display: flex;
     align-items: center;
-    justify-content: center;
+    border-bottom-right-radius:  14px;
+    border: 1px solid #000;
+    background: #000;
     cursor: pointer;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
 }
 
 .search-bar button img {
     height: 22.75px;
 }
 
-@media only screen and (max-width: 768px) {
-    .header-row {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 15px; /* Ajuste para móviles */
-    }
-    .search-bar {
-        width: 100%;
-        max-width: 463px;
-    }
-}
-
 /* =========================
    LOGIN + CARRITO
 ========================= */
 .user-actions {
+    position: absolute;
+    left: calc(50% + 200px); /* Ajusta según el ancho real de la search-bar */
+    top: 35%;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
-    gap: 24px;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    min-width: 160px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    padding: 10px 0;
-    margin-top: 5px;
-}
-
-.dropdown::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    display: block;
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #000;
-    transition: background-color 0.2s;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.user-actions a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #000;
-    text-decoration: none;
-    font-family: "Kdam Thmor Pro", sans-serif;
-    font-size: 20px;
-    font-weight: 400;
+    gap: 5px;
     height: 45px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000;
 }
 
-.user-actions i {
-    font-size: 22px;
+.user-actions > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.user-name {
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Responsive */
+@media only screen and (max-width: 768px) {
+    .header-row {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 0 16px;
+    }
+
+    .search-bar {
+        position: static;
+        transform: none;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .user-actions {
+        position: static;
+        transform: none;
+        top: auto;
+        left: auto;
+        justify-content: center;
+        width: 100%;
+        height: auto;
+        margin-top: 8px;
+    }
+
+    .user-actions > div {
+        justify-content: center;
+        font-size: 16px;
+    }
 }
 
 /* =========================
@@ -412,7 +394,8 @@ body {
 
 .product-detail {
     padding: 40px 20px;
-    max-width: 1200px;
+    max-width: 900px;
+    min-width: 340px;
     width: max-content;
     margin: 0 auto;
     background-color: #fff;
@@ -573,7 +556,8 @@ input[type="number"] {
    CARRITO DE COMPRAS
 ========================= */
 .cart-section {
-    max-width: 600px;
+    max-width: 700px;
+    min-width: 340px;
     margin: 40px auto;
     background: #fff;
     border: 1px solid #000;
@@ -911,7 +895,8 @@ input[type="number"] {
 ========================= */
 .login-container,
 .register-container {
-    max-width: 400px;
+    max-width: 500px;
+    min-width: 340px;
     margin: 60px auto;
     padding: 30px;
     background-color: #fff;
@@ -993,7 +978,9 @@ input[type="number"] {
 
 .login-links {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
     font-family: "Kdam Thmor Pro", sans-serif;
     font-size: 14px;
 }
@@ -1001,34 +988,20 @@ input[type="number"] {
 @media only screen and (max-width: 768px) {
     .login-container,
     .register-container {
-        max-width: 90%;
-        margin: 40px auto;
         padding: 20px;
     }
-
-    .form-row {
-        flex-direction: column;
-        gap: 20px;
+    .form-group input {
+        font-size: 14px;
     }
-}
-
-a.product-card {
-    text-decoration: none;
-    color: inherit;
-}
-
-.add-to-cart-btn a,
-.add-to-cart-btn a:visited,
-.add-to-cart-btn a:hover,
-.add-to-cart-btn a:active {
-    color: inherit;
-    text-decoration: none;
+    .login-button,
+    .register-button {
+        width: 100%;
+    }
 }
 
 /* =========================
    FOOTER
 ========================= */
-
 footer {
     background: #222;
     color: #fff;

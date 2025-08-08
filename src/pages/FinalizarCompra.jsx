@@ -55,7 +55,7 @@ const FinalizarCompra = () => {
                   <span className="order-item">
                     {item.nombre} x{item.cantidad}
                   </span>
-                  S/ {item.precio * item.cantidad}
+                  S/ {(item.precio * item.cantidad).toFixed(2)}
                 </li>
               ))}
             </ul>

@@ -1,33 +1,46 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { api } from "../api";
 import "../style.css";
 
 const Registro = () => {
     const [name, setName] = useState("");
-    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [contrasena, setContrasena] = useState("");
     const [confirmContrasena, setConfirmContrasena] = useState("");
-
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
-    const manejarLogin = e => {
+    const manejarRegistro = async e => {
         e.preventDefault();
-        // Aquí iría la lógica para registrar al usuario
+        setError("");
+        setSuccess("");
         if (contrasena !== confirmContrasena) {
             setError("Las contraseñas no coinciden");
             return;
         }
-        const nuevoUsuario = { name, lastName, email };
-        localStorage.setItem("usuario", JSON.stringify(nuevoUsuario));
-        navigate("/");
+        try {
+            await api("/usuario", {
+                method: "POST",
+                body: {
+                    nombre: name, // Solo nombre, sin apellido
+                    correo_electronico: email,
+                    contrasena: contrasena
+                },
+                auth: false
+            });
+            setSuccess("Usuario registrado correctamente. Ahora puedes iniciar sesión.");
+            setTimeout(() => navigate("/login"), 1500);
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     return (
         <div className="register-container">
             <h2 className="register-title">Registro de Usuario</h2>
-            <form className="register-form" onSubmit={manejarLogin}>
+            <form className="register-form" onSubmit={manejarRegistro}>
                 <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
                     <input
@@ -37,17 +50,6 @@ const Registro = () => {
                         required
                         value={name}
                         onChange={e => setName(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="apellido">Apellido</label>
-                    <input
-                        type="text"
-                        id="apellido"
-                        name="apellido"
-                        required
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
                     />
                 </div>
                 <div className="form-group">
@@ -86,6 +88,7 @@ const Registro = () => {
                     />
                 </div>
                 {error && <div className="error">{error}</div>}
+                {success && <div className="success">{success}</div>}
                 <div className="login-links">
                     <button type="submit" className="register-button">
                         Registrarse

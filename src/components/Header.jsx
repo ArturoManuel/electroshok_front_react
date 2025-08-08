@@ -1,21 +1,45 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
     const navigate = useNavigate();
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    const [usuario, setUsuario] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem('usuario'));
+        } catch {
+            return null;
+        }
+    });
+
+    useEffect(() => {
+        const syncUsuario = () => {
+            try {
+                setUsuario(JSON.parse(localStorage.getItem('usuario')));
+            } catch {
+                setUsuario(null);
+            }
+        };
+        window.addEventListener('storage', syncUsuario);
+        window.addEventListener('usuarioActualizado', syncUsuario);
+        return () => {
+            window.removeEventListener('storage', syncUsuario);
+            window.removeEventListener('usuarioActualizado', syncUsuario);
+        };
+    }, []);
 
     const manejarLogout = () => {
         localStorage.removeItem('usuario');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        setUsuario(null);
         navigate('/login');
     };
 
     return (
         <header className="header">
             {/* Logo clickeable */}
-            <div className="header-logo">
-                <Link to="/">
-                    <img src="/assets/images/Logo.svg" alt="Electroshok Logo" />
-                </Link>
+            <div className="header-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+                <img src="/assets/images/Logo.svg" alt="Electroshok Logo" />
             </div>
 
             {/* Input de búsqueda + botones sesión */}
@@ -30,24 +54,25 @@ const Header = () => {
                 <div className="user-actions">
                     {usuario ? (
                         <>
-                            <span>Hola, {usuario.nombre}</span>
-                            <a onClick={manejarLogout}>
-                                <i className="fa-solid fa-user"></i>
+                            <i className="fa-solid fa-user"></i>
+                            <div className="user-name">Hola, {usuario.nombre || usuario.correo_electronico?.split('@')[0]}</div>
+                            <div className="user-name logout" onClick={manejarLogout} style={{cursor: 'pointer'}}>
+                                <i className="fa-solid fa-right-from-bracket"></i>
                                 <span>Salir</span>
-                            </a>
-                            <Link to="/carrito" className="cart">
+                            </div>
+                            <div className="cart" onClick={() => navigate('/carrito')} style={{ cursor: 'pointer' }}>
                                 <i className="fa-solid fa-cart-shopping"></i>
-                            </Link>
+                            </div>
                         </>
                     ) : (
                         <>
-                            <Link to="/login" className="login">
+                            <div className="login" onClick={() => navigate('/login')} style={{ cursor: 'pointer' }}>
                                 <i className="fa-solid fa-user"></i>
                                 <span>Iniciar sesión</span>
-                            </Link>
-                            <Link to="/carrito" className="cart">
+                            </div>
+                            <div className="cart" onClick={() => navigate('/carrito')} style={{ cursor: 'pointer' }}>
                                 <i className="fa-solid fa-cart-shopping"></i>
-                            </Link>
+                            </div>
                         </>
                     )}
                 </div>
@@ -56,14 +81,12 @@ const Header = () => {
             {/* Categorías */}
             <nav className="header-nav">
                 <div className="nav-desktop">
-                    <Link to="/productos">
-                        <button>Todos</button>
-                    </Link>
-                    <button>Celulares</button>
-                    <button>Tablets</button>
-                    <button>Laptops</button>
-                    <button>PC</button>
-                    <button>Accesorios</button>
+                    <button onClick={() => navigate('/productos')}>Todos</button>
+                    <button onClick={() => navigate('/productos?categoria=celulares')}>Celulares</button>
+                    <button onClick={() => navigate('/productos?categoria=tablets')}>Tablets</button>
+                    <button onClick={() => navigate('/productos?categoria=laptops')}>Laptops</button>
+                    <button onClick={() => navigate('/productos?categoria=pc')}>PC</button>
+                    <button onClick={() => navigate('/productos?categoria=accesorios')}>Accesorios</button>
                 </div>
             </nav>
         </header>

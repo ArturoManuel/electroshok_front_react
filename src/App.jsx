@@ -11,7 +11,7 @@ import FinalizarCompra from "./pages/FinalizarCompra";
 
 const App = () => {
     return (
-        <>
+        <div className="app-container">
             <div className="background-pattern"></div>
             <Header />
             <Routes>
@@ -24,7 +24,7 @@ const App = () => {
                 <Route path="/finalizar-compra" element={<FinalizarCompra />} />
             </Routes>
             <Footer />
-        </>
+        </div>
     );
 };
 

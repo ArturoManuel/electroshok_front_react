@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="footer">
+        <footer>
             <section>
                 <h3>Contacto</h3>
                 <p>Telefono: +51 987654321</p>
