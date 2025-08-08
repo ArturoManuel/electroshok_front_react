@@ -12,14 +12,14 @@ const ProductCard = ({ producto }) => {
   return (
     <div className="product-card">
       <div className="product-image">
-        <img src={producto.imagen} alt={producto.nombre} />
+        <img src={producto.url_imagen || producto.imagen} alt={producto.nombre} />
       </div>
 
       <div className="product-info">
         <div className="product-details">
           <span className="product-brand">{producto.marca}</span>
           <span className="product-name">{producto.nombre}</span>
-          <span className="product-price">S/ {producto.precio.toFixed(2)}</span>
+          <span className="product-price">S/ {Number(producto.precio).toFixed(2)}</span>
         </div>
 
         <div
